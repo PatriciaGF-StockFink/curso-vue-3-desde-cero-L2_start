@@ -3,6 +3,7 @@ const API = "https://api.github.com/users/";
 const requestMaxTimeMs = 3000; //ms
 
 const app = Vue.createApp({
+    // model data
     data() {
         return {
           searchedUser: null,
@@ -18,9 +19,8 @@ const app = Vue.createApp({
             const favorites = new Map(savedFavorites.map(favorite => [favorite.login, favorite]))
             this.favorites = favorites;
         }
-
     },
-    // computed properties to encapsulate the logic. whenever the condition changes, the property is reevaluated
+    // computed properties -> to encapsulate the logic. whenever the condition changes, the property is reevaluated
     computed: {
         isFavorite() {
             return this.favorites.has(this.result.login)
@@ -35,6 +35,7 @@ const app = Vue.createApp({
             // init values
             this.result = this.error = null;
 
+            // cache
             const foundInFavorites = this.favorites.get(this.searchedUser)
             
             const shouldRequestAgain = (() => {
@@ -48,7 +49,7 @@ const app = Vue.createApp({
             })()
               
             if (!!foundInFavorites && !shouldRequestAgain) {
-            console.log("Found and we use the cached version")
+            console.log("Found and used the cached version")
             return this.result = foundInFavorites
             }
               
@@ -84,9 +85,11 @@ const app = Vue.createApp({
         showFavorite(favorite) {
             this.result = favorite;
         },
+        // method to implement the active 'transition'
         checkFavorite(id){
             return this.result?.login === id;
         },
+        // update local storage to keep the favorites
         updateStorage() {
             // make a local storage for favorites
             window.localStorage.setItem('favorites', JSON.stringify(this.allFavorites))

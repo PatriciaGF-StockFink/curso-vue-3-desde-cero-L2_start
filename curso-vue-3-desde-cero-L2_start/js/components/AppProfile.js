@@ -1,5 +1,7 @@
 app.component('app-profile', {
+    // properties passed parent->child
     props: ['result', 'isFavorite'],
+    // methods used in the template: define and emit event for the parent to listen (child->parent)
     methods: {
         addFavorite() {
             this.$emit('add-favorite')
@@ -8,6 +10,7 @@ app.component('app-profile', {
             this.$emit('remove-favorite')
         }
     },
+    // component template
     template:
     `
     <div class="result" >

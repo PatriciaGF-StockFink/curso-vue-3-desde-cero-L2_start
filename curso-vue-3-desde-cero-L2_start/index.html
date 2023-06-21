@@ -46,7 +46,7 @@
                 :is-favorite="isFavorite"
                 @add-favorite="addFavorite"
                 @remove-favorite="removeFavorite"/>
-                
+
             </Transition>
 
             <!-- Error -->
@@ -56,7 +56,8 @@
     <script src="js/main.js"></script>
     <script src="js/components/AppProfile.js"></script>
     <script>
-        const mountedApp = app.mount("#app") // everything inside the div with id=app
+        // mount vue in the div with id = app and store the mountedApp in constant
+        const mountedApp = app.mount("#app")
     </script>
 </body>
 
