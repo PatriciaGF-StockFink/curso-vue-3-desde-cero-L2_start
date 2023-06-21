@@ -14,6 +14,16 @@
     <div id="app">
         <!-- Favorites -->
         <div class="favorites">
+            <transition-group name="list">
+                <div 
+                    class="favorite" 
+                    :class="{'favorite--selected': checkFavorite(fav.login)}"
+                    v-for="fav in allFavorites" :key="fav.id">
+                    <a @click.prevent="showFavorite(fav)" href="#">
+                        <img v-bind:src="fav.avatar_url" :alt="fav.name" class="favorite__avatar">
+                    </a>
+                </div>
+            </transition-group>
         </div>
 
         <!-- Content -->
@@ -21,25 +31,32 @@
             <h1 class="content__title">Search GitHub Users</h1>
 
             <!-- Search -->
+            <!-- v-on:submit.prevent : listens the submit event and prevents the page from reloading -->
             <form class="search" v-on:submit.prevent="search">
+                <!-- Bind the input value to the searchedUser variable of the model-->
                 <input v-model="searchedUser" type="text" class="search__input" required placeholder="Search GitHub users">
                 <input type="submit" class="search__submit" value="Search">
             </form>
 
             <!-- Result -->
-            <div class="result" v-if="result">
-                <h2 class="result__name">{{result.name}}</h2>
-                <img class="result__avatar" v-bind:src="result.avatar_url">
-                <p class="result__bio">{{result.bio}}</p>
-            </div>
-            <p v-else>Waiting for a user to search...</p>
+            <!-- If result is true (there exists a user)-->
+            <Transition>
+                <app-profile v-if="result" 
+                :result="result" 
+                :is-favorite="isFavorite"
+                @add-favorite="addFavorite"
+                @remove-favorite="removeFavorite"/>
+                
+            </Transition>
+
             <!-- Error -->
             <div class="result__error" v-if="error">{{error}}</div>
         </article>
     </div>
     <script src="js/main.js"></script>
+    <script src="js/components/AppProfile.js"></script>
     <script>
-        const mountedApp = app.mount("#app")
+        const mountedApp = app.mount("#app") // everything inside the div with id=app
     </script>
 </body>
 
